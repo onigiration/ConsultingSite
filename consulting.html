@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>株式会社サンプルWebコンサルティング | 戦略的Webソリューション</title>
+    <style>
+        /* --- ベーススタイル --- */
+        :root {
+            --primary-color: #0056b3;
+            --text-color: #333;
+            --bg-light: #f9f9f9;
+            --white: #ffffff;
+            --header-height: 70px;
+        }
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: var(--header-height);
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; padding: 0; margin: 0; }
+        
+        /* --- ヘッダー --- */
+        header {
+            width: 100%;
+            height: var(--header-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            z-index: 1001;
+        }
+
+        /* --- ナビゲーション --- */
+        .nav-menu ul {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-link:hover { color: var(--primary-color); }
+        
+        .btn-contact-nav {
+            background-color: var(--primary-color);
+            color: var(--white) !important;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+        .btn-contact-nav:hover { opacity: 0.8; }
+
+        /* --- ハンバーガーメニュー --- */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 1002;
+        }
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: #333;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* --- スマホ対応 (768px以下) --- */
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .hamburger.active .bar:nth-child(2) { opacity: 0; }
+            .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: var(--white);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: 0.4s;
+                text-align: center;
+            }
+            .nav-menu.active { left: 0; }
+            .nav-menu ul { flex-direction: column; gap: 40px; }
+            .nav-link { font-size: 1.5rem; display: block; padding: 10px; }
+            .btn-contact-nav { margin-top: 20px; padding: 15px 40px; font-size: 1.2rem; }
+        }
+
+        /* --- 共通セクション --- */
+        section { padding: 80px 5%; }
+        h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; position: relative; }
+        h2::after {
+            content: ""; display: block; width: 50px; height: 3px;
+            background-color: var(--primary-color); margin: 15px auto 0;
+        }
+        
+        /* --- ヒーローエリア --- */
+        .hero {
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 20px; line-height: 1.3; }
+        @media (max-width: 768px) { .hero h1 { font-size: 1.8rem; } }
+        
+        .btn-main {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+
+        /* --- サービス等のカード --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: var(--bg-light); padding: 30px; border-radius: 10px; text-align: center;
+        }
+        .service-card h3 { color: var(--primary-color); margin-bottom: 15px; }
+
+        /* --- ワークフロー (ご利用の流れ) --- */
+        #workflow { background-color: var(--white); }
+        .workflow-container {
+            max-width: 800px; margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .step-item {
+            background-color: var(--bg-light); border: 1px solid #eee; border-radius: 8px;
+            padding: 20px; width: 100%; display: flex; align-items: center; gap: 20px;
+            box-sizing: border-box;
+        }
+        .step-number {
+            background-color: var(--primary-color); color: var(--white);
+            font-size: 1.2rem; font-weight: bold; width: 50px; height: 50px;
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 50%; flex-shrink: 0;
+        }
+        .step-content h3 { margin: 0 0 5px 0; font-size: 1.1rem; color: var(--primary-color); }
+        .step-content p { margin: 0; font-size: 0.9rem; }
+        .step-arrow { color: var(--primary-color); font-size: 1.5rem; margin: 10px 0; }
+
+        /* --- 会社概要テーブル --- */
+        .company-table {
+            width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse;
+        }
+        .company-table th, .company-table td {
+            padding: 15px; border-bottom: 1px solid #ddd; text-align: left;
+        }
+        .company-table th { width: 30%; background-color: #f9f9f9; }
+
+        /* --- フッター --- */
+        footer { background:#333; color:#fff; text-align:center; padding:20px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">WebConsulting Inc.</div>
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#about" class="nav-link">私たちについて</a></li>
+                <li><a href="#service" class="nav-link">サービス</a></li>
+                <li><a href="#workflow" class="nav-link">ご利用の流れ</a></li>
+                <li><a href="#company" class="nav-link">会社概要</a></li>
+                <li><a href="#contact" class="nav-link btn-contact-nav">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>ビジネスの成長を<br>「Web」から加速させる。</h1>
+        <p>戦略策定から制作・運用まで。<br>成果にコミットするWebコンサルティングパートナーです。</p>
+        <div style="margin-top: 20px;">
+            <a href="#contact" class="btn-main">無料相談はこちら</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>Why Us - 選ばれる理由</h2>
+        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p><strong>01. 数値に基づく論理的な提案</strong><br>感覚ではなく、データに基づいた「根拠のある戦略」を立案します。</p>
+            <br>
+            <p><strong>02. 制作から運用まで一気通貫</strong><br>実際のサイト制作や広告運用、その後の改善（PDCA）まで対応可能です。</p>
+        </div>
+    </section>
+
+    <section id="service" style="background-color: var(--bg-light);">
+        <h2>Service - サービス</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Webコンサルティング</h3>
+                <p>現状の課題を分析し、目標達成までのロードマップを策定します。</p>
+            </div>
+            <div class="service-card">
+                <h3>Webサイト制作・改善</h3>
+                <p>デザインだけでなく、成果を最大化するためのサイト設計を行います。</p>
+            </div>
+            <div class="service-card">
+                <h3>集客支援</h3>
+                <p>SEO対策やWeb広告運用を通じて、見込み客のアクセスを最大化します。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="workflow">
+        <h2>Workflow - ご利用の流れ</h2>
+        <div class="workflow-container">
+            <div class="step-item">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>お問い合わせ</h3>
+                    <p>フォームよりご連絡ください。24時間以内に担当者より返信いたします。</p>
+                </div>
+            </div>
+            <div class="step-arrow">▼</div>
+            <div class="step-item">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>無料ヒアリング</h3>
+                    <p>Zoom等で詳細を伺います。この段階での料金は発生しません。</p>
+                </div>
+            </div>
+            <div class="step-arrow">▼</div>
+            <div class="step-item">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>提案・お見積もり</h3>
+                    <p>具体的な戦略プランとお見積書をご提示します。</p>
+                </div>
+            </div>
+            <div class="step-arrow">▼</div>
+            <div class="step-item">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h3>施策スタート</h3>
+                    <p>プロジェクトを開始し、事業成長をサポートします。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="company">
+        <h2>Company - 会社概要</h2>
+        <table class="company-table">
+            <tr><th>屋号 / 会社名</th><td>株式会社サンプルWebコンサルティング（予定）</td></tr>
+            <tr><th>代表者</th><td>山田 太郎</td></tr>
+            <tr><th>所在地</th><td>東京都〇〇区〇〇 1-2-3</td></tr>
+            <tr><th>事業内容</th><td>Webコンサルティング / Web制作</td></tr>
+        </table>
+    </section>
+
+    <section id="contact" style="background-color: var(--primary-color); color: var(--white); text-align: center;">
+        <h2 style="color: var(--white);">Contact</h2>
+        <p>初回ヒアリングは無料です。お気軽にご連絡ください。</p>
+        <div style="margin-top: 30px;">
+            <a href="#" style="background: var(--white); color: var(--primary-color); padding: 15px 50px; border-radius: 5px; font-weight: bold; display: inline-block;">お問い合わせはこちら</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 WebConsulting Inc. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const navMenu = document.querySelector(".nav-menu");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        });
+        navLinks.forEach(n => n.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            navMenu.classList.remove("active");
+        }));
+    </script>
+</body>
+</html>
